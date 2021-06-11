@@ -3,8 +3,9 @@ using namespace std;
 
 char str[100];
 vector<int> query;
+vector<char> opr = {'+', '*', '^'};
 
-vector<int> CheckPlus(int l, int r)
+vector<int> Check(int l, int r, char c)
 {
 	vector<int> ret;
 	int bracket = 0;
@@ -12,33 +13,7 @@ vector<int> CheckPlus(int l, int r)
 	{
 		if(str[i] == '(') bracket++;
 		else if(str[i] == ')') bracket--;
-		if(str[i] == '+' && bracket == 0) ret.push_back(i);
-	}
-	return ret;
-}
-
-vector<int> CheckMul(int l, int r)
-{
-	vector<int> ret;
-	int bracket = 0;
-	for(int i=l ; i<=r ; i++)
-	{
-		if(str[i] == '(') bracket++;
-		else if(str[i] == ')') bracket--;
-		if(str[i] == '*' && bracket == 0) ret.push_back(i);
-	}
-	return ret;
-}
-
-vector<int> CheckPow(int l, int r)
-{
-	vector<int> ret;
-	int bracket = 0;
-	for(int i=l ; i<=r ; i++)
-	{
-		if(str[i] == '(') bracket++;
-		else if(str[i] == ')') bracket--;
-		if(str[i] == '^' && bracket == 0) ret.push_back(i);
+		if(str[i] == c && bracket == 0) ret.push_back(i);
 	}
 	return ret;
 }
@@ -52,88 +27,36 @@ void express(int l, int r, int i, int sz)
 		return ;
 	}
 
-	vector<int> v;
-
-	v = CheckPlus(l, r);
-	if(l == r && v.size() == 0 && query[i] == 1)
+	for(int k=0 ; k<3 ; k++)
 	{
-		express(l, r, i+1, sz);
-		return ;
-	}
-	else if(v.size() != 0)
-	{
-		if(v.size()+1 < query[i])
+		vector<int> v = Check(l, r, opr[k]);
+		if(l == r && v.size() == 0 && query[i] == 1)
 		{
-			printf("null\n");
+			express(l, r, i+1, sz);
 			return ;
 		}
-		else
+		else if(v.size() != 0)
 		{
-			if(query[i] == 1) express(l, v[0]-1, i+1, sz);
-			else if(query[i] == v.size() + 1) express(v.back()+1, r, i+1, sz);
-			else express(v[query[i]-2]+1, v[query[i]-1]-1, i+1, sz);
-			return ;
-		}
-	}
-
-	v = CheckMul(l, r);
-	if(l == r && v.size() == 0 && query[i] == 1)
-	{
-		express(l, r, i+1, sz);
-		return ;
-	}
-	else if(v.size() != 0)
-	{
-		if(v.size()+1 < query[i])
-		{
-			printf("null\n");
-			return ;
-		}
-		else
-		{
-			if(query[i] == 1) express(l, v[0]-1, i+1, sz);
-			else if(query[i] == v.size() + 1) express(v.back()+1, r, i+1, sz);
-			else express(v[query[i]-2]+1, v[query[i]-1]-1, i+1, sz);
-			return ;
-		}
-	}
-
-	v = CheckPow(l, r);
-	if(l == r && v.size() == 0 && query[i] == 1)
-	{
-		express(l, r, i+1, sz);
-		return ;
-	}
-	else if(v.size() != 0)
-	{
-		if(v.size()+1 < query[i])
-		{
-			printf("null\n");
-			return ;
-		}
-		else
-		{
-			if(query[i] == 1) express(l, v[0]-1, i+1, sz);
-			else if(query[i] == v.size() + 1) express(v.back()+1, r, i+1, sz);
-			else express(v[query[i]-2]+1, v[query[i]-1]-1, i+1, sz);
+			if(v.size()+1 < query[i]) printf("null\n");
+			else
+			{
+				if(query[i] == 1) express(l, v[0]-1, i+1, sz);
+				else if(query[i] == v.size() + 1) express(v.back()+1, r, i+1, sz);
+				else express(v[query[i]-2]+1, v[query[i]-1]-1, i+1, sz);
+			}
 			return ;
 		}
 	}
 
 	bool bl = (str[l] == '('), br = (str[r] == ')');
-	if(!bl || !br || query[i] > 1)
-	{
-		printf("null\n");
-		return ;
-	}
-	express(l+1, r-1, i+1, sz);
+	if(!bl || !br || query[i] > 1) printf("null\n");
+	else express(l+1, r-1, i+1, sz);
 }
 
 int main()
 {
 	scanf(" %s",str+1);
-	int n = strlen(str+1);
-	int q;
+	int n = strlen(str+1), q;
 	scanf(" %d",&q);
 	while(q--)
 	{
