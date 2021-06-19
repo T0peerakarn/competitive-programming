@@ -4,7 +4,7 @@ using namespace std;
 #define N 100005
 
 int cnt_id, cnt_scc;
-int id[N], low[N], scc[N], deg[N];
+int id[N], low[N], scc[N], deg[N], sub[N];
 bool onStack[N];
 stack<int> node, topo;
 vector<int> g[N], gt[N];
@@ -60,20 +60,22 @@ int main()
 		deg[v]++;
 	}
 	for(int i=1 ; i<=cnt_scc ; i++) if(deg[i] == 0) topo.push(i);
-	int last_scc;
 	while(!topo.empty())
 	{
-		last_scc = topo.top();
+		int now = topo.top();
+		sub[now]++;
 		topo.pop();
-		for(auto x : gt[last_scc])
+		for(auto x : gt[now])
 		{
+			sub[x] += sub[now];
 			deg[x]--;
 			if(!deg[x]) topo.push(x);
 		}
 	}
-	int cnt = 0;
-	for(int i=1 ; i<=n ; i++) if(scc[i] == last_scc) cnt++;
+	int scc_capital, cnt = 0;
+	for(int i=1 ; i<=n ; i++) if(sub[scc[i]] == cnt_scc) scc_capital = scc[i];
+	for(int i=1 ; i<=n ; i++) if(scc[i] == scc_capital) cnt++;
 	printf("%d\n",cnt);
-	for(int i=1 ; i<=n ; i++) if(scc[i] == last_scc) printf("%d ",i);
+	for(int i=1 ; i<=n ; i++) if(scc[i] == scc_capital) printf("%d ",i);
 	return 0;
 }
