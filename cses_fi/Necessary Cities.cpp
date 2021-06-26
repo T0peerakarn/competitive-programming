@@ -37,6 +37,8 @@ int main()
 		g[v].push_back(u);
 	}
 	dfs(1, 0);
+	sort(ans.begin(), ans.end());
+	ans.resize(unique(ans.begin(), ans.end()) - ans.begin());
 	printf("%d\n",ans.size());
 	for(auto x : ans) printf("%d ",x);
 	return 0;
