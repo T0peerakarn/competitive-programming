@@ -8,7 +8,7 @@ struct point
 	int x, y, no;
 };
 
-point p[N], stk[N], p0;
+point p[N], stk[N];
 
 int direction(point a, point b, point c)
 {
@@ -25,13 +25,8 @@ double distance(point a, point b)
 
 bool compare(point a, point b)
 {
-	int di = direction(p0, a, b);
-	if(di == 0)
-	{
-		double da = distance(p0, a), db = distance(p0, b);
-		return da < db;
-	}
-	return di < 0;
+	int di = direction(p[1], a, b);
+	return (di == 0) ? distance(p[1], a) < distance(p[1], b) : di < 0;
 }
 
 void solve()
@@ -52,7 +47,6 @@ void solve()
 		if(p[i].y < p[1].y) swap(p[i], p[1]);
 		else if(p[i].y == p[1].y && p[i].x < p[1].x) swap(p[i], p[1]);
 	}
-	p0 = p[1];
 	sort(p+2, p+cnt+1, compare);
 	stk[1] = p[1];
 	int sz = 1;
