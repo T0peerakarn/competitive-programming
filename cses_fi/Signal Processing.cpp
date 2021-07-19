@@ -40,14 +40,13 @@ int main()
     int n, m;
     scanf(" %d %d",&n,&m);
     int sz = 1;
-    while(sz < n+m+m+1) sz *= 2;
-    sz *= 2;
+    while(sz <= n+m) sz *= 2;
     vector<CD> p1(sz), p2(sz);
-    for(int i=2*m+1 ; i<=2*m+n ; i++) cin >> p1[i];
-    for(int i=m-1 ; i>=0 ; i--) cin >> p2[i];
+    for(int i=1 ; i<=n ; i++) cin >> p1[i];
+    for(int i=m ; i>=1 ; i--) cin >> p2[i];
     fft(p1, false), fft(p2, false);
     for(int i=0 ; i<sz ; i++) p1[i] *= p2[i];
     fft(p1, true);
-    for(int i=2*m+1 ; i<3*m+n ; i++) cout << (long long)(p1[i].real() + 0.5) << ' ';
+    for(int i=2 ; i<=n+m ; i++) cout << (long long)(p1[i].real() + 0.5) << ' ';
     return 0;
 }
