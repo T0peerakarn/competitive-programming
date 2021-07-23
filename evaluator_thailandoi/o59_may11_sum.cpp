@@ -2,7 +2,6 @@
 using namespace std;
 #include <ext/pb_ds/assoc_container.hpp>
 using namespace __gnu_pbds;
-#pragma GCC optimize("Ofast")
 
 typedef long long ll;
 template<typename T> using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
@@ -31,7 +30,7 @@ int main()
         {
             sum += t.order_of_key({qs[i]-mid, N});
             t.insert({qs[i], ++cnt});
-        }
+        } 
         (sum >= k) ? l = mid : r = mid-1;
     }
     printf("%lld\n",l);
