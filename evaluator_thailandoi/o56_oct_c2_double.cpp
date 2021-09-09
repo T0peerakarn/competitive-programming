@@ -1,46 +1,42 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int arr[100100];
+const int N = 1e5+5;
+
+int arr[N];
 map<int, int> mp;
 
 int main()
 {
-	int n;
-	scanf(" %d",&n);
-	for(int i=1 ; i<=n ; i++)
-	{
-		scanf(" %d",&arr[i]);
-		arr[i] += arr[i-1];
-	}
+    int n;
+    scanf(" %d",&n);
+    for(int i=1 ; i<=n ; i++)
+    {
+        scanf(" %d",&arr[i]);
+        arr[i] += arr[i-1];
+        mp[arr[i]] = i;
+    }
 
-	//A
-	for(int i=1 ; i<=n ; i++)
-		if(arr[n] - arr[i] == arr[i])
-		{
-			printf("%d\n",i);
-			return 0;
-		}
+    if(arr[n]%2)
+    {
+        printf("NO\n");
+        return 0;
+    }
 
-	//AB
-	int a=1000000, b=1000000;
-	for(int i=1 ; i<=n ; i++)
-		mp[arr[i]] = i;
-	for(int i=1 ; i<=n ; i++)
-	{
-		if(arr[i] < arr[n] - arr[i]) continue;
-		int x = arr[i], y = arr[n] - arr[i];
-		if((x-y)%2 == 0 && mp.count((x-y)>>1))
-		{
-			if(a > mp[(x-y)>>1])
-			{
-				a = mp[(x-y)>>1];
-				b = i;
-			}
-			else if(a == mp[(x-y)>>1])
-				b = min(b, i);
-		}
-	}
-	printf((a == 1000000) ? "NO\n" : "%d %d\n",a,b);
-	return 0;
+    for(int i=1 ; i<=n ; i++)
+        if(arr[i] == arr[n]-arr[i])
+        {
+            printf("%d\n",i);
+            return 0;
+        }
+
+    for(int i=1 ; i<=n ; i++)
+        if(mp.count(arr[i]+arr[n]/2))
+        {
+            printf("%d %d\n",i,mp[arr[i]+arr[n]/2]);
+            return 0;
+        }
+
+    printf("NO\n");
+    return 0;
 }
