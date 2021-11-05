@@ -27,6 +27,7 @@ void solve()
     }
     printf("%d\n",mx);
 }
+
 int main()
 {
     int t;
