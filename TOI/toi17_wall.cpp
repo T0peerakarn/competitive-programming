@@ -9,7 +9,7 @@ bool water[N][N];
 
 int main()
 {
-    int n, m, cnt_comp = 0, ans = 0;
+    int n, m, ans = 0;
 
     scanf(" %d %d",&n,&m);
     for(int i=1 ; i<=n ; i++) for(int j=1 ; j<=m ; j++) scanf(" %c",&t[i][j]);
